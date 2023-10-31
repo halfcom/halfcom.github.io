@@ -6,6 +6,41 @@
     <title>Document</title>
 </head>
 <body>
+    <script>
+    const websiteURL = 'https://webscraper.io/test-sites/e-commerce/allinone'; // Replace with the URL of the website you want to scrape
+
+    // Function to fetch the website and scrape links
+    function scrapeWebsite() {
+      fetch(websiteURL)
+        .then((response) => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error('Failed to fetch the website');
+          }
+        })
+        .then((html) => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          const links = doc.querySelectorAll('a'); // Use appropriate CSS selector
+
+          const linkList = document.getElementById('linkList');
+
+          links.forEach((link) => {
+            const li = document.createElement('li');
+            li.textContent = link.href;
+            linkList.appendChild(li);
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
+    // Call the scrapeWebsite function when the page loads
+    window.addEventListener('load', scrapeWebsite);
+  </script>
     <h1>Test</h1>
 </body>
 </html>
